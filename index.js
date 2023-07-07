@@ -1,6 +1,10 @@
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 
+function removerAcentos(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 const client = new Client({
   authStrategy: new LocalAuth(),
 });
@@ -16,22 +20,27 @@ client.on('message_create', message_create => {
 client.on('ready', () => {
   console.log('Cliente pronto!');
 
-  const contactId = '557197389935@c.us';
+  const contactId = '5511999092481@c.us';
   const contact = client.getContactById(contactId);
   const contactName = contact.name;
-  const message = `Boa tarde, ${contactName}! Por favor, escreva "Olá"`;
+  const mensagem = `Boa tarde, ${contactId}! Por favor, escreva "Olá"`;
 
+client.sendMessage(contactId, mensagem)
 
 client.on('message', message => {
-    if(message.body === 'Olá'){
-        message.reply('Olá, eu sou o bot do Ministério de Música em construção')
+  
+  var mensagemTratada = removerAcentos(message.body).toLowerCase()
+
+  if(mensagemTratada === 'ola')
+    {
+        message.reply(`Olá, ${contactName} eu sou o Taioba. Você gostaria de saber sua data que cantará na nossa igreja?`)
     }
     else
         message.reply('Por favor, digite o comando correto para trocarmos ideia')
     }
 )
 
-    client.sendMessage(contactId, message)
+    
 })
 
 
