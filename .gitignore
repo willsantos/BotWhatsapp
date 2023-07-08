@@ -141,7 +141,8 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
-#cache
+#whatsapp-web.js
 .wwebjs_cache/
+.wwebjs_auth/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
