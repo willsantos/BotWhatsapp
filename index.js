@@ -1,13 +1,18 @@
-const express = require('express')
-const app = express()
+const express = require('express') //minimal web framework(gerencia a API)
 const qrcode = require('qrcode-terminal');
 const { Client, LocalAuth } = require('whatsapp-web.js');
+require('dotenv').config(); //lê arquivos .env
+
+
+
+const app = express()
+
 
 function removerAcentos(str) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
-const client = new Client({
+const  client =  new Client({
   authStrategy: new LocalAuth(),
 });
 
@@ -45,5 +50,7 @@ client.on('message', message => {
     
 })
 
+await client.initialize();
 
-client.initialize();
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
