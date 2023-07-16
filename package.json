@@ -1,22 +1,23 @@
 {
   "name": "botwhatsapp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "edivandro",
+  "author": "Edivandro,Wilson Santos",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
     "qrcode-terminal": "^0.12.0",
-    "whatsapp-web.js": "^1.21.0"
+    "whatsapp-web.js": "^1.21.0",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "dotenv": "^16.3.1",
     "nodemon": "^3.0.0"
   }
 }
