@@ -9,53 +9,51 @@ const app = express()
 app.use(bodyParser.json());
 
 
-function removerAcentos(str) {
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
 
 const client = new Client({
   authStrategy: new LocalAuth(),
 });
 
-client.on('qr', qr => {
-  qrcode.generate(qr, { small: true });
+client.on('qr',  qr => {
+   qrcode.generate(qr, { small: true });
 });
 
-client.on('message_create', message_create => {
-  console.log(message_create)
-})
-
 client.on('ready', () => {
-  console.log('Cliente pronto!');
-
-  const contactId = '5511000000000@c.us';
-  const contact = client.getContactById(contactId);
-  const contactName = contact.name;
-  const mensagem = `Boa tarde, ${contactId}! Por favor, escreva "Olá"`;
-
-  client.sendMessage(contactId, mensagem)
-
-  client.on('message', message => {
-
-    var mensagemTratada = removerAcentos(message.body).toLowerCase()
-
-    if (mensagemTratada === 'ola') {
-      message.reply(`Olá, ${contactName} eu sou o Taioba. Você gostaria de saber sua data que cantará na nossa igreja?`)
-    }
-    else
-      message.reply('Por favor, digite o comando correto para trocarmos ideia')
-  }
-  )
-
-
+  console.log('Conta Conectada com sucesso!');
+  //Precisa aguardar essa mensagem antes de executar requisições
 })
+
+
 client.initialize();
+
+const getGroups = async () => {
+  try {
+    const chats = await client.getChats();
+    const groups = chats.filter(chat => chat.isGroup);
+    return groups;
+  } catch (error) {
+    console.error("Falha ao requistar grupos", error);
+  }
+}
+
 
 //ROTAS HTTP API
 
 app.get('/api/v1/home', (req, res) => {
   res.send('Hello World');
-});
+}); // rota de teste
+
+app.get('/api/v1/getGroups', async (req, res) => {
+  var groups = await getGroups();
+  var showGroups = [];
+
+  groups.forEach(group =>{
+    showGroups.push(group.name,group.id._serialized)
+  })
+
+  res.json(showGroups);
+}) //Rota para exibir todos os grupos que a conta participa.
+
 
 app.post('/api/v1/send', async (req, res, next) => {
 
@@ -64,14 +62,29 @@ app.post('/api/v1/send', async (req, res, next) => {
     const { number, message } = req.body;
 
 
-    const msg = client.sendMessage(`${number}@c.us`, message); // Envia a msg pro numero
+    const msg = client.sendMessage(`${number}@c.us`, message).then(
+      res.send('mensagem enviada!')
+    ); // Envia a msg pro numero
     console.log(`Sera enviada a msg: ${msg}`)
-    res.send('mensagem enviada!'); // Send the response
+    // Send the response
   } catch (error) {
     console.log(error);
     next(error);
   }
-});
+}); //Rota para enviar mensagem para um contato
+
+app.post('/api/v1/sendGroup', async (req, res, next) => {
+  try {
+    const { groupId, message } = req.body;
+    const msg = client.sendMessage(`${groupId}@g.us`, message).then(
+      res.send('mensagem enviada!')
+    );
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+})//rota para enviar mensagem para um grupo
+
 
 //INICIA O SERVIDOR
 
