@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 const app = express()
 app.use(bodyParser.json());
 
-
-
 const client = new Client({
   authStrategy: new LocalAuth(),
 });
@@ -40,7 +38,7 @@ const getGroups = async () => {
 //ROTAS HTTP API
 
 app.get('/api/v1/home', (req, res) => {
-  res.send('Hello World');
+  res.status(200).send('Hello World');
 }); // rota de teste
 
 app.get('/api/v1/getGroups', async (req, res) => {
@@ -51,7 +49,7 @@ app.get('/api/v1/getGroups', async (req, res) => {
     showGroups.push(group.name,group.id._serialized)
   })
 
-  res.json(showGroups);
+  res.status(200).json(showGroups);
 }) //Rota para exibir todos os grupos que a conta participa.
 
 
@@ -60,13 +58,9 @@ app.post('/api/v1/send', async (req, res, next) => {
 
   try {
     const { number, message } = req.body;
-
-
     const msg = client.sendMessage(`${number}@c.us`, message).then(
-      res.send('mensagem enviada!')
-    ); // Envia a msg pro numero
-    console.log(`Sera enviada a msg: ${msg}`)
-    // Send the response
+      res.status(201).json('mensagem enviada!')
+    );
   } catch (error) {
     console.log(error);
     next(error);
@@ -77,7 +71,7 @@ app.post('/api/v1/sendGroup', async (req, res, next) => {
   try {
     const { groupId, message } = req.body;
     const msg = client.sendMessage(`${groupId}@g.us`, message).then(
-      res.send('mensagem enviada!')
+      res.status(201).json('mensagem enviada!')
     );
   } catch (error) {
     console.log(error);
