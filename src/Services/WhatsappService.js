@@ -1,20 +1,24 @@
 import whatsapp from 'whatsapp-web.js';
 const { Client, LocalAuth } = whatsapp;
-
-import qrterminal from 'qrcode-terminal';
-const { terminal: qrcode } = qrterminal;
+import qrcode from 'qrcode-terminal';
 
 class WhatsappService {
 
   constructor(options) {
+
     this.authStrategy = options.authStrategy || new LocalAuth();
     this.client = null;
   }
 
-  initialize() {
+  connect() {
+
     this.client = new Client({
       authStrategy: this.authStrategy,
+      puppeteer: {
+        args: ['--no-sandbox'],
+      }
     });
+
 
     this.client.on('qr', qr => {
       qrcode.generate(qr, { small: true });
@@ -22,13 +26,11 @@ class WhatsappService {
 
     this.client.on('ready', () => {
       console.log('Conta conectada com sucesso!');
-      //Precisa aguardar essa mensagem antes de executar requisições
     });
 
-    this.client.initialize();
+    this.client.initialize()
 
   }
-
 
 }
 
