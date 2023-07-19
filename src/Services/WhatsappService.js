@@ -28,7 +28,7 @@ class WhatsappService {
       console.log('Conta conectada com sucesso!');
     });
 
-    this.client.initialize()
+    this.client.initialize();
 
   }
 
