@@ -1,14 +1,12 @@
-import 'dotenv/config.js';//lê arquivos .env
+import CheckApi from '../Helper/CheckApiKey.js';
 
 class ChatContactController {
 
 
   //Metodo para enviar mensagem para um contato
   static EnviarMensagem = async (req, res, client) => {
-    const API_KEY = process.env.API_KEY;
-    let key = req.get("x-api-key");
 
-    if (API_KEY !== key) {
+    if (!CheckApi(req.get("x-api-key"))) {
       res.status(403).json('acesso negado');
     } else {
       try {
