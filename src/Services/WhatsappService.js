@@ -2,6 +2,7 @@ import whatsapp from 'whatsapp-web.js';
 const { Client, LocalAuth } = whatsapp;
 import qrcode from 'qrcode-terminal';
 
+
 class WhatsappService {
 
   constructor(options) {

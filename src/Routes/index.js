@@ -4,7 +4,7 @@ import groups from './GroupsRoute.js'
 
 const routes = (app, client) => {
 
-  app.route('/api/v1/').get((req, res) => {
+  app.route('/api/v2/').get((req, res) => {
     res.status(200).json('Hello World');
   })
 
