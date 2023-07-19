@@ -1,8 +1,8 @@
 import whatsapp from 'whatsapp-web.js';
 const { Client, LocalAuth } = whatsapp;
 
-import qrterminal from 'qrcode-terminal';
-const { terminal: qrcode } = qrterminal;
+import qrcode from 'qrcode-terminal';
+
 
 class WhatsappService {
 
