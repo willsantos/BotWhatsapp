@@ -5,7 +5,7 @@ const router = express.Router();
 
 export default function (client) {
   router
-    .post("/api/v1/send", (req, res) => {
+    .post("/api/v2/contact/send", (req, res) => {
       ChatContactController.EnviarMensagem(req, res, client);
     });
 

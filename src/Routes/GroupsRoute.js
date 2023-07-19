@@ -5,10 +5,10 @@ const router = express.Router();
 
 export default function (client) {
   router
-    .get("/api/v1/getGroups", (req, res) => {
+    .get("/api/v2/groups", (req, res) => {
       ChatGroupController.ListarGrupos(req, res, client);
     })
-    .post("/api/v1/sendGroup", (req, res) => {
+    .post("/api/v2/groups/send", (req, res) => {
       ChatGroupController.EnviarMensagem(req, res, client);
     })
 
