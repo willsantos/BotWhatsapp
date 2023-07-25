@@ -3,5 +3,3 @@ npm-debug.log
 Dockerfile
 docker-compose.yml
 .dockerignore
-.wwebjs_cache
-.wwebjs_auth
