@@ -43,4 +43,5 @@ WORKDIR /home/botzap/app
 COPY . .
 RUN npm install
 ENV PORT=${BOT_ZAP_PORT}
+EXPOSE ${BOT_ZAP_PORT}
 CMD [ "node", "index.js" ]
